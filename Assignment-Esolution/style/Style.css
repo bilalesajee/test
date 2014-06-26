@@ -1,0 +1,74 @@
+#empForm{
+	border:3px solid #FFF;
+	padding-top:40px;
+	margin:0 auto;
+	width:35%;
+    background-color:#FFF;
+	position: absolute;
+     width: 29%;
+	left: 34%;
+	margin-top: -252px	}
+
+#location{
+	border:3px solid #FFF;
+	padding-top:40px;
+	margin:0 auto;
+	width:35%;
+     background-color:#FFF;
+	position: absolute;
+   width: 29%;
+	left: 34%;	}
+#DeptForm{
+	border:3px solid #FFF;
+	padding-top:40px;
+	margin:0 auto;
+	width:35%;
+background-color:#FFF;
+	position: absolute;
+   width: 30%;
+	left: 34%;
+	}
+#header{
+	 width: 27%;
+	border:4px solid #000;
+	margin:0 auto;
+	}	
+body{
+	background-color:#999;}
+#ErrorMSg{
+    color:#F00;}
+/*#New{
+    border: 0 none;
+    border-radius: 11px;
+    height: 33px;
+    width: 79px;
+	 cursor: pointer;
+}*/
+span{
+	color:#F00;}
+
+#btnMultiDel{
+    border-radius: 4px;
+    border-top: medium none yellow;
+    height: 31px;
+    width: 139px;
+    }
+#selecter{
+	border-radius: 5px;
+    height: 29px;
+    width: 117px;}
+.menu a{
+	 text-decoration: none;
+    color: #fff;
+    background: #666;
+    padding: 19px;
+    display:inline-block;
+	}    
+.menu a:hover{
+	background-color:#09C;
+	}	
+#error{
+	color:#F00;
+	}
+#locError{
+		color:#F00;}		

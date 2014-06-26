@@ -1,14 +1,14 @@
 <?php
 require_once('conn.php');
 ?>
-<table width="50%" border="0" align="center" id="tgrid" ><tbody>
+<table width="70%" border="0" align="center" id="tdept" ><tbody>
         <tr>
-            <th width="18" scope="col" bgcolor="#0000FF">ID</th>
+            <th width="18" scope="col"  bgcolor="#FFFFFF">ID</th>
             
-            <th width="27" scope="col">Name</th>
-            <th width="55" scope="col">Code</th>
-            <th width="38" scope="col">Head of Departmetn</th>
-            <th width="80" scope="col">Action</th>
+            <th width="40" scope="col"  bgcolor="#FFFFFF">Name</th>
+            <th width="35" scope="col"  bgcolor="#FFFFFF">Code</th>
+            <th width="80" scope="col"  bgcolor="#FFFFFF">Head of Departmetn</th>
+            <th  bgcolor="#FFFFFF" colspan="2">Action</th>
         </tr>
         <?php
         $select = "SELECT d.ID, d.DEPT_NAME, d.DEPT_CODE, d.DEPT_HEAD FROM department d";
@@ -16,17 +16,17 @@ require_once('conn.php');
         $run = mysql_query($select);
         while ($row = mysql_fetch_array($run)) {
             ?>
-            <tr id="row<?php echo $row['ID']; ?>">
-                <td><?php echo $row['ID']; ?></td>
-                <td><?php echo $row['DEPT_NAME']; ?></td>
-                <td><?php echo $row['DEPT_CODE']; ?></td>
-                <td><?php echo $row['DEPT_HEAD']; ?></td>
+            <tr id="row<?php echo $row['ID']; ?>" height="30">
+                <td align="center"><?php echo $row['ID']; ?></td>
+                <td align="center"><?php echo $row['DEPT_NAME']; ?></td>
+                <td align="center"><?php echo $row['DEPT_CODE']; ?></td>
+                <td align="center"><?php echo $row['DEPT_HEAD']; ?></td>
                 
                 
            
-      </td>
-                <td><a href="#" onclick="delDepartment('<?php echo $row['ID']; ?>')" >Delete</a></td>
-                <td><input type="checkbox" name="chekboxDel" class="chkdel" value="<?php echo $row['ID']; ?>"></td>
+      <td width="2"></td >
+                <td width="39"   align="center"><a href="#" onclick="delDepartment('<?php echo $row['ID']; ?>')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value="<?php echo $row['ID']; ?>"></td>
+                
 
             </tr>
             <?php

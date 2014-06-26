@@ -3,11 +3,10 @@
 	padding-top:40px;
 	margin:0 auto;
 	width:35%;
-    background-color:#FFF;
+     background-color:#FFF;
 	position: absolute;
-     width: 29%;
-	left: 34%;
-	margin-top: -252px	}
+      width: 29%;
+	left: 34%;	}
 
 #location{
 	border:3px solid #FFF;
@@ -16,7 +15,7 @@
 	width:35%;
      background-color:#FFF;
 	position: absolute;
-   width: 29%;
+      width: 29%;
 	left: 34%;	}
 #DeptForm{
 	border:3px solid #FFF;

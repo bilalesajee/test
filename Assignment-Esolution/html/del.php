@@ -1,7 +1,7 @@
 <?php
 require_once('conn.php');
 extract($_POST);
-//$id=$_GET['id'];
+$id=$_GET['id'];
 if($a==''){
  $select="DELETE FROM person WHERE ID=$id";}
  else{

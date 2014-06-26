@@ -1,50 +1,51 @@
-
+var i,j=0;
 var validateEmail = function()
 {
     email = $(this).val();
     var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
     if (!reg.test(email)) {
         $('#email').html("inavlid input");
+        i=1;
     } else {
         $('#email').html("");
+        i=0;
     }
 }
 var numericCheck = function() {
     val = $(this).val();
     if (!$.isNumeric(val)) {
-        //error.push('Please enter valid input');
-        //error[5] = 'invalid age';
         $('#AgeError').html('Please enter valid input');
+        j=1;
     } else {
         $('#AgeError').html('');
-        // error[5] = '';
+        j=0;
     }
     displayErrors();
 }
 $(document).ready(function(e) {
 
     $('#Age').change(numericCheck);
-    $('#Email').change(validateEmail);
-    //listcountry();
-    //listCity();
-    //$('#cnt').change(listCity);
+    $('#Email').change( validateEmail);
     listcountry();
     $('#cnt').change(function() {
         var id = $('#cnt').val();
         listCity(id)
-
-
-
     });
-    //call data grid view from data database
+    /*
+     * 
+     * grid function to get data from data base 
+     * gridLocation function to call location data from data Base
+     * gridDepartment function to call department data from data Base
+     * locationList call drop down location on employee form 
+     * deptList call drop down department on employee form
+     * 
+     */
     grid();
     gridLocation();
     gridDepartment();
     locationList();
     deptList();
-
-    $('#btnMultiDel').click(
-            function() {
+    $('#btnMultiDel').click(function() {
                 Multidel()
             });
     $('#multiDelL').click(function() {
@@ -56,32 +57,34 @@ $(document).ready(function(e) {
     });
     $('#multiDelEmp').click(function() {
         multiDeptEmp();
-
     });
-    //show form up and down
     $('#New').click(function() {
         $('#empForm').show(300);
     });
-
     $('#btnDept').click(function() {
         $('#DeptForm').show(300);
     });
-
     $('#LocForm').click(function() {
         $('#location').show(300);
     });
-
+    /*
+     * 
+     * Main employee form submit function
+     * Employee form save button function    
+     * 
+     * 
+     */
     $('#save').click(function(e) {
+        e.preventDefault();
         var name = $('#Name').val(),
                 email = $('#Email').val(),
                 age = $('#Age').val(),
                 address = $('#Address').val(),
                 hiddenID = $('#hiddenid').val(),
-                loc=$('#loc').val(),
-                dept=$('#dept').val(),
+                loc = $('#loc').val(),
+                dept = $('#dept').val(),
                 status = $('#status').val();
-        e.preventDefault();
-        var error = [];
+         var error = [];
         if (name == '')
         {
             error.push('please Enter Name');
@@ -95,46 +98,48 @@ $(document).ready(function(e) {
         if (address == '') {
             error.push('please Enter Address');
         }
-        if (error.length > 0) {
+          if(i==1){
+            error.push('invalid email');
+        }
+        if (j==1){
+            error.push('invalid age');
+        }
+      if (error.length > 0) {
             $('#ErrorMSg').show();
             $('#ErrorMSg').html(error);
         }
-        if (error.length < 1) {
+      if(error.length < 1) {
             $('#ErrorMSg').hide();
-
             //insert data into database
-            $.ajax({url: "Insert.php", data: {name: name, age: age, email: email,loc:loc,dept:dept, status: status, address: address, hiddenID: hiddenID}, async: false, type: 'POST', success: function(result) {
+            $.ajax({url: "Insert.php", data: {name: name, age: age, email: email, loc: loc, dept: dept, status: status, address: address, hiddenID: hiddenID}, async: false, type: 'POST', success: function(result) {
                     result = JSON.parse(result);
                     $('#ErrorMSg').html(result.msg);
-                    //console.log(($('#hiddenid').val() == ''));
-                    if ($('#hiddenid').val() == '') {
-                        var tds = [];
-                        $.each(result.data, function(i, value)
-                        {
-                            if (i == 'status') {
-
-                                c = (value == 1) ? 'checked' : '';
-                                value = '<input type="checkbox" name="chk" value="1" ' + c + '  />';
-                            }
-                            tds.push('<td>' + value + '</td>')
-                        });
-                        tds.push('<td><a href="#" onclick="RowDelete(\'' + result.data.id + '\')" >Delete</a>|<a href="#"  onClick="RowEdit(\'' + result.data.id + '\')"> Edit</a></td><td><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.data.id + '\'/></td>')
-
-                        var tr = '<tr id="row' + result.data.id + '">' + tds.join('') + '</tr>';
-                        $('#tgrid tbody').append(tr);
-                    }
-                    else {
+                    if (result.success === true) {
+                        if ($('#hiddenid').val() == '') {
+                            var tds = [];
+                            $.each(result.data, function(i, value)
+                            {
+                             /*   if (i == 'status') {
+                                    c = (value == 1) ? 'Active' : 'In Active';
+                                    value = c;
+                                }*/
+                                tds.push('<td  align="center">' + value + '</td>')
+                            });
+                            tds.push('<td  align="center"><a href="#" onclick="RowDelete(\'' + result.data.id + '\')" >Delete</a>|<a href="#"  onClick="RowEdit(\'' + result.data.id + '\')"> Edit</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.data.id + '\'/></td>')
+                            var tr = '<tr id="row' + result.data.id + '">' + tds.join('') + '</tr>';
+                            $('#tgrid tbody').append(tr);
+                        }
+                        else
                         {
                             $("#row" + result.data.id + "> td").each(function(i, element) {
-
                                 var row = ['id', 'name', 'age', 'address', 'email', 'status'];
-                                if (row.length > i)
+                                if (row.length > i) {
                                     $(element).html(result.data[row[i]]);
+                                }
                             });
                         }
-                        $('#hiddenid').val('');
-
                     }
+                    $('#hiddenid').val('');
                     formhide();
                 }
             });
@@ -146,34 +151,35 @@ $(document).ready(function(e) {
     $('#btnlocation').click(function() {
         var locCode = $('#locationId').val(),
                 Detail = $('#DetId').val(),
-                country = $('#country').val(),
+                country = $('#cnt').val(),
                 city = $('#city').val();
 
         if (locCode == '' || Detail == '' || country == '')
         {
             $('#locError').html('please fill all field');
-            return false;
+           
         }
         else {
             $('#locError').hide();
-            $.ajax({url: "insertLocation.php", data: {locCode: locCode, Detail: Detail, country: country, city: city}, async: false, type: 'POST', success: function(result) {
-
+            $.ajax({url: "insertLocation.php", data: {locCode: locCode, Detail: Detail, country: country, city: city}, async: false, type: 'POST', success: function(data) {
                     $('#location').hide(300);
                     $("#frmlocation").trigger('reset');
+                    data = JSON.parse(data);
                     //row add into form
-                      var tds = [];
-                        $.each(result.data, function(i, value)
-                        {
-                            tds.push('<td>' + value + '</td>')
-                        });
-                        tds.push('<td><a href="#" onclick="RowDelete(\'' + result.data.id + '\')" >Delete</a></td><td><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.data.id + '\'/></td>')
+                    var tds = [];
 
-                        var tr = '<tr id="row' + result.data.id + '">' + tds.join('') + '</tr>';
-                        $('#tlocation tbody').append(tr);
-                        //end row add code 
+                    $.each(data.result, function(i, value)
+                    {
+                        tds.push('<td  align="center">' + value + '</td>')
+                    });
+                    tds.push('<td  align="center"><a href="#" onclick="RowDelete(\'' + data.result.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + data.result.id + '\'/></td>');
+
+                    var tr = '<tr id="row' + data.result.id + '">' + tds.join() + '</tr>';
+                    $('#tlocation tbody').append(tr);
+                    //end row add code 
 
                 }});
-            return true;
+           
         }
 
     });
@@ -183,21 +189,30 @@ $(document).ready(function(e) {
                 deptH = $('#deptH').val();
         if (deptName == '' || deptCode == '' || deptH == '') {
             $('#error').html('please fill All field');
-            return false;
+            
         } else {
             $.ajax({url: "insertDepart.php", data: {deptName: deptName, deptCode: deptCode, deptH: deptH}, async: false, type: 'POST', success: function(data) {
                     $('#error').hide();
                     $('#DeptForm').hide(300);
-                    //$('#depForm').each (function(){
-                    //          this.reset();
-                    //   });
                     $("#depForm").trigger('reset');
+                    //row add into form
+                    
+                    data = JSON.parse(data);
+                    var tds = [];
+
+                    $.each(data.result, function(i, value)
+                    {
+                        tds.push('<td align="center">' + value + '</td>')
+                    });
+                    tds.push('<td align="center"><a href="#" onclick="RowDelete(\'' + data.result.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + data.result.id + '\'/></td>');
+
+                    var tr = '<tr id="row' + data.result.id + '" >' + tds.join() + '</tr>';
+                    $('#tdept tbody').append(tr);
+                    //end row add code 
                 }});
-            return true;
+            
         }
-
     });
-
 }
 );
 function displayErrors() {
@@ -212,17 +227,15 @@ function displayErrors() {
 function RowEdit(id)
 {
     $.ajax({url: "edit.php", data: {id: id}, success: function(data) {
-
             data = JSON.parse(data);
-
             $('#Name').val(data.Name);
             $('#Age').val(data.Age);
             $('#Email').val(data.Email);
             $('#Address').val(data.Address);
             $('#hiddenid').val(id);
+            $('#status').val(data.Status);
+            $("#status").val(data.Status); 
             $('#empForm').show(300);
-            //console.log("#"+id+ "> td");
-
         }});
 }
 //function to delete data from database
@@ -286,7 +299,7 @@ function gridDepartment() {
         }});
 }
 function formhide() {
-        $('#empForm').hide(1000);
+    $('#empForm').hide(1000);
     $('#form').trigger('reset');
 }
 function Multidel() {

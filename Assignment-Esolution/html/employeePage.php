@@ -42,7 +42,7 @@
                         <tr>
                             <td>Status</td>  
                             <td><select  id="status">
-                                    <option value="0">--Select status--</option>
+                                    <option selected disabled>--Select status--</option>
                                     <option value="1">Active</option>
                                     <option value="0">DeActivate</option>
                                 </select></td>

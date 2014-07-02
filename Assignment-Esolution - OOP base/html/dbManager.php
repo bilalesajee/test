@@ -27,7 +27,7 @@ class dbmanager {
         }
     }
 
-    public function queryy($query) {
+    public function query($query) {
         if ($this->query = mysql_query($query)) {
             return $this->query;
         } else {
@@ -37,7 +37,7 @@ class dbmanager {
 
     public function fetch_result($q) {
         $data = array();
-        if ($qid = $this->queryy($q)) {
+        if ($qid = $this->query($q)) {
             while ($row = mysql_fetch_array($qid)) {
                 $data[] = $row;
             }

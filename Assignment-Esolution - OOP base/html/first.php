@@ -114,6 +114,7 @@ require_once 'conn.php';
 </table>
 
 </div><!--End deparment div-->
+
         <div id="Reocrd"></div>
     </body>
 </html>

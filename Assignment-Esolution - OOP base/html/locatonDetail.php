@@ -25,7 +25,7 @@ $array = $mydb->fetch_result($select);
                     <td align="center"><?php echo $location['CITY']; ?></td>
 
                     </td>
-                    <td  align="center"><a href="#" onclick="delLocation('<?php echo $location['ID']; ?>')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value="<?php echo $location['ID']; ?>"></td>
+                    <td  align="center"><a href="#" onclick="RowDelete_location('<?php echo $location['ID']; ?>')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value="<?php echo $location['ID']; ?>"></td>
 
 
                 </tr>

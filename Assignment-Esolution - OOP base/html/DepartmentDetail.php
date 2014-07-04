@@ -25,7 +25,7 @@ foreach ($array as $value) {
                 
            
       <td width="2"></td >
-                <td width="39"   align="center"><a href="#" onclick="delDepartment('<?php echo $value['ID']; ?>')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value="<?php echo $value['ID']; ?>"></td>
+                <td width="39"   align="center"><a href="#" onclick="RowDelete_department('<?php echo $value['ID']; ?>')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value="<?php echo $value['ID']; ?>"></td>
                 
 
             </tr>

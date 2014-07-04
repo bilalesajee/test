@@ -25,11 +25,12 @@ $(document).ready(function(e) {
 
     $('#Age').change(numericCheck);
     $('#Email').change(validateEmail);
-    listcountry();
+    list_country();
     $('#cnt').change(function() {
         var id = $('#cnt').val();
-        listCity(id)
+        list_city(id)
     });
+
     /*
      * 
      * grid function to get data from data base 
@@ -39,23 +40,23 @@ $(document).ready(function(e) {
      * deptList call drop down department on employee form
      * 
      */
-    grid();
-    gridLocation();
-    gridDepartment();
-    locationList();
-    deptList();
+    grid_employee();
+    grid_location();
+    grid_department();
+    location_list();
+    dept_list();
     $('#btnMultiDel').click(function() {
         Multidel()
     });
     $('#multiDelL').click(function() {
-        multiLocationDel();
+        multiDel_location();
 
     });
     $('#multiDeptDel').click(function() {
-        multiDeptDel()
+        multiDel_dept();
     });
     $('#multiDelEmp').click(function() {
-        multiDeptEmp();
+        multiDel_employee();
     });
     $('#New').click(function() {
         $('#empForm').show(300);
@@ -110,9 +111,10 @@ $(document).ready(function(e) {
         if (error.length < 1) {
             $('#ErrorMSg').hide();
             //insert data into database
-            $.ajax({url: "Insert.php", data: {name: name, age: age, email: email, loc: loc, dept: dept, status: status, address: address, hiddenID: hiddenID}, async: false, type: 'POST', success: function(result) {
-                    result = JSON.parse(result);
-                    $('#ErrorMSg').html(result.msg);
+            $.ajax({url: "insert.php", data: {name: name, age: age, email: email, loc: loc, dept: dept, status: status, address: address, hiddenID: hiddenID, tablename: 'person'}, async: false, type: 'POST', success: function(result) {
+                    //result = JSON.parse(result);
+                    //$('#ErrorMSg').html(result.msg);
+                    //alert(result.s);
                     if (result.success === true) {
                         if ($('#hiddenid').val() == '') {
                             var tds = [];
@@ -124,7 +126,7 @@ $(document).ready(function(e) {
                                  }*/
                                 tds.push('<td  align="center">' + value + '</td>')
                             });
-                            tds.push('<td  align="center"><a href="#" onclick="RowDelete(\'' + result.data.id + '\')" >Delete</a>|<a href="#"  onClick="RowEdit(\'' + result.data.id + '\')"> Edit</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.data.id + '\'/></td>')
+                            tds.push('<td  align="center"><span id=' + result.data.id + ' name="empBtnDel"/> Delete</span>|<a href="#"  onClick="RowEdit(\'' + result.data.id + '\')"> Edit</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.data.id + '\'/></td>')
                             var tr = '<tr id="row' + result.data.id + '">' + tds.join('') + '</tr>';
                             $('#tgrid tbody').append(tr);
                         }
@@ -137,7 +139,7 @@ $(document).ready(function(e) {
                                 }
                             });
                         }
-                    }
+                     }
                     $('#hiddenid').val('');
                     formhide();
                 }
@@ -159,22 +161,23 @@ $(document).ready(function(e) {
         }
         else {
             $('#locError').hide();
-            $.ajax({url: "insertLocation.php", data: {locCode: locCode, Detail: Detail, country: country, city: city}, async: false, type: 'POST', success: function(data) {
+            $.ajax({url: "insert.php", data: {locCode: locCode, Detail: Detail, country: country, city: city, tablename: 'location'}, async: false, type: 'POST', success: function(data) {
                     $('#location').hide(300);
                     $("#frmlocation").trigger('reset');
-                    data = JSON.parse(data);
+                    //data = JSON.parse(data);
                     //row add into form
-                    var tds = [];
-
-                    $.each(data.result, function(i, value)
-                    {
-                        tds.push('<td  align="center">' + value + '</td>')
-                    });
-                    tds.push('<td  align="center"><a href="#" onclick="RowDelete(\'' + data.result.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + data.result.id + '\'/></td>');
-
-                    var tr = '<tr id="row' + data.result.id + '">' + tds.join() + '</tr>';
-                    $('#tlocation tbody').append(tr);
-                    //end row add code 
+                    /*
+                     var tds = [];
+                     
+                     $.each(data.result, function(i, value)
+                     {
+                     tds.push('<td  align="center">' + value + '</td>')
+                     });
+                     tds.push('<td  align="center"><a href="#" onclick="RowDelete(\'' + data.result.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + data.result.id + '\'/></td>');
+                     
+                     var tr = '<tr id="row' + data.result.id + '">' + tds.join() + '</tr>';
+                     $('#tlocation tbody').append(tr);
+                     //end row add code */
                 }});
         }
     });
@@ -185,24 +188,24 @@ $(document).ready(function(e) {
         if (deptName == '' || deptCode == '' || deptH == '') {
             $('#error').html('please fill All field');
         } else {
-            $.ajax({url: "insertDepart.php", data: {deptName: deptName, deptCode: deptCode, deptH: deptH}, async: false, type: 'POST', success: function(data) {
+            $.ajax({url: "insert.php", data: {deptName: deptName, deptCode: deptCode, deptH: deptH, tablename: 'department'}, async: false, type: 'POST', success: function(data) {
                     $('#error').hide();
                     $('#DeptForm').hide(300);
                     $("#depForm").trigger('reset');
                     //row add into form
 
-                    data = JSON.parse(data);
+                    //result = JSON.parse(data);
+                    /* console.log(data);
                     var tds = [];
-
-                    $.each(data.result, function(i, value)
+                    $.each(result.data, function(i, value)
                     {
                         tds.push('<td align="center">' + value + '</td>')
                     });
-                    tds.push('<td align="center"><a href="#" onclick="RowDelete(\'' + data.result.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + data.result.id + '\'/></td>');
+                    tds.push('<td align="center"><a href="#" onclick="delDepartment(\'' + data.data.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.data.id + '\'/></td>');
 
-                    var tr = '<tr id="row' + data.result.id + '" >' + tds.join() + '</tr>';
+                    var tr = '<tr id="row' + result.data.id + '" >' + tds.join() + '</tr>';
                     $('#tdept tbody').append(tr);
-                    //end row add code 
+                    //end row add code */
                 }});
 
         }
@@ -218,9 +221,9 @@ function displayErrors() {
     }
 }
 //update Data in database 
-function RowEdit(id)
+function rowEdit_employee(id)
 {
-    $.ajax({url: "edit.php", data: {id: id}, success: function(data) {
+    $.ajax({url: "update.php", data: {id: id, tablename: 'person'}, success: function(data) {
             data = JSON.parse(data);
             $('#Name').val(data.Name);
             $('#Age').val(data.Age);
@@ -233,44 +236,31 @@ function RowEdit(id)
         }});
 }
 //function to delete data from database
-function RowDelete(id)
-{
+function RowDelete_employee(id){
 
-    $.ajax({url: "del.php", data: {id: id}, success: function(data) {
+    $.ajax({url: "delete.php", data: {id: id, tablename: 'person'}, type: 'POST', success: function(data) {
             //$('#ErrorMSg').html(data.msg).show(1000);
             //console.log($("#row" + id));
-            result = JSON.parse(data);
-            if (result.status === true) {
-                $("#row" + id).remove();
-            }
-
-
-
-
-        },
+            // result = JSON.parse(data);
+            //if (result.status === true) {
+            $("#row" + id).remove();
+        }
     });
 }
-function delLocation(id)
-{
+function RowDelete_location(id){
 
-    $.ajax({url: "delLocation.php", data: {id: id}, success: function(data) {
+    $.ajax({url: "delete.php", data: {id: id, tablename: 'location'}, success: function(data) {
             //$('#ErrorMSg').html(data.msg).show(1000);
-            console.log($("#row" + id));
+            //console.log($("#row" + id));
             $("#row" + id).remove();
         },
-        statusCode: {
-            404: function() {
-                alert("page not found");
-            }
-        },
     });
 }
-function delDepartment(id)
-{
+function RowDelete_department(id){
 
-    $.ajax({url: "delDepartment.php", data: {id: id}, success: function(data) {
+    $.ajax({url: "delete.php", data: {id: id, tablename: 'department'}, success: function(data) {
             //$('#ErrorMSg').html(data.msg).show(1000);
-            console.log($("#row" + id));
+            //console.log($("#row" + id));
             $("#row" + id).remove();
         },
         statusCode: {
@@ -281,17 +271,17 @@ function delDepartment(id)
     });
 }
 //grid function retrive all data from dataBase 
-function grid() {
+function grid_employee() {
     $.ajax({url: "EmployeeDetail.php", async: false, type: 'POST', success: function(data) {
             $('#empGrid').html(data);
         }});
 }
-function gridLocation() {
+function grid_location() {
     $.ajax({url: "locatonDetail.php", async: false, type: 'POST', success: function(data) {
             $('#locDetail').html(data);
         }});
 }
-function gridDepartment() {
+function grid_department() {
     $.ajax({url: "DepartmentDetail.php", async: false, type: 'POST', success: function(data) {
             $('#deptDetail').html(data);
         }});
@@ -300,80 +290,62 @@ function formhide() {
     $('#empForm').hide(1000);
     $('#form').trigger('reset');
 }
-function Multidel() {
+function multiDel_employee() {
     var delId = [];
     $('.chkdel:checked').each(function(index, element) {
         var id = $(this).val();
         delId.push(id);
+        for (i = 0; i <= delId.length; i++) {
+            $("#row" + delId[i]).remove();
+          
+        }
     });
-    $.post("del.php", {a: delId.join()});
+    $.post("delete.php", {id: delId.join(), tablename: 'person'});
 
 }
-function multiLocationDel() {
+function multiDel_location() {
     var delId = [];
     $('.chkdel:checked').each(function(index, element) {
         var id = $(this).val();
         delId.push(id);
     });
-    $.post("delLocation.php", {a: delId.join()}, function(data) {
+    $.post("delete.php", {id: delId.join(), tablename: 'location'}, function(data) {
         for (i = 0; i <= delId.length; i++) {
             $("#row" + delId[i]).remove();
         }
     });
 
 }
-function multiDeptDel() {
+function multiDel_dept() {
     var delId = [];
     $('.chkdel:checked').each(function(index, element) {
         var id = $(this).val();
         delId.push(id);
     });
-    $.post("delDepartment.php", {id: delId.join()}, function() {
+    $.post("delete.php", {id: delId.join(), tablename: 'department'}, function() {
         for (i = 0; i <= delId.length; i++) {
             $("#row" + delId[i]).remove();
         }
 
     });
 }
-function multiDeptEmp() {
-    var delId = [];
-    $('.chkdel:checked').each(function(index, element) {
-        var id = $(this).val();
-        delId.push(id);
-    });
-    $.post("del.php", {id: delId.join()}, function(data) {
-        result = JSON.parse(data);
-        if (result.status === true) {
-
-            for (i = 0; i <= delId.length; i++) {
-                $("#row" + delId[i]).remove();
-            }
-        } else {
-            alert('There is some problem');
-        }
-    }
-
-
-    );
-
-}
-function listcountry() {
+function list_country() {
     $.ajax({url: "country.php", async: false, type: 'POST', success: function(data) {
             $('#cnt-List').html(data);
         }});
 }
-function listCity(id) {
+function list_city(id) {
     $.ajax({url: "city.php", data: {id: id}, async: false, type: 'POST', success: function(data) {
             $('#city-List').html(data);
         }});
 }
-function locationList() {
+function location_list() {
     $.ajax({url: "LocationList.php", async: false, type: 'POST', success: function(data) {
             $('#locList').html(data);
         }});
 
 }
-function deptList() {
+function dept_list() {
     $.ajax({url: "deptList.php", async: false, type: 'POST', success: function(data) {
             $('#depList').html(data);
         }});

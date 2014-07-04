@@ -29,7 +29,7 @@ $obj = new dbmanager();
             echo 'In Active';
         }
         ?> </td>
-                <td  align="center"><a href="deleteRow.php?id=<?php echo $p['ID']; ?>">Delete</a>|<a href="#"  onClick="RowEdit('<?php echo $p['ID']; ?>')"> Edit</a><input type="checkbox" name="chekboxDel" class="chkdel" value="<?php echo $p['ID']; ?>"> </td>
+                <td><a href="#" onclick="RowDelete_employee('<?php echo $p['ID']; ?>')"> Delete</a>|<a href="#"  onClick="rowEdit_employee('<?php echo $p['ID']; ?>')"> Edit</a><input type="checkbox" name="chekboxDel" class="chkdel" value="<?php echo $p['ID']; ?>"> </td>
             </tr>
     <?php
 }

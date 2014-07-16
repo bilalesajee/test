@@ -1,0 +1,90 @@
+.rightheading
+	{
+		width:180px;
+		float: left;
+		margin:0px;
+		padding:0px;
+		font-family:Verdana, Arial, Helvetica, sans-serif;
+		font-size:12px;
+		font-weight:bold;
+		color:#7e8901;
+	}
+
+.table
+{
+border-collapse:collapse;
+}
+.table, td, th
+{
+border:1px solid #C0943B;
+}
+	.topheadinggreen {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 22px;
+	font-weight: normal;
+	color:#7e8901;
+}
+.s1{ font-family:Verdana, Arial, Helvetica, sans-serif; font-size:14px; color:#000000; font-weight:bold;}
+.s2{ font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; color:#790000; font-weight:bold;}
+.s3{ font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; color:#FFFFFF; background-repeat:no-repeat;}
+.s4{ font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#858484;}
+.s5{ font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#000000; font-weight:bold;}
+.s6{ font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; color:#ffffff; font-weight:bold;}
+.s7{ font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#5E709C; font-weight:bold;}
+.banner{ font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#790000; background-repeat:no-repeat;}
+
+.headerfont{ color: #000000;
+font-family: Verdana,Arial,Helvetica,sans-serif;
+font-size: 14px;
+font-weight: bold;
+padding-left: 135px;.
+}
+
+.menu a:link {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#B64D13; text-decoration:none;}
+.menu a:visited {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#B64D13; text-decoration:none;}
+.menu a:hover {font-family:Verdana, Arial, Helvetica, sans-serif font-size:11px; color:#000000; text-decoration:underline;}
+
+.topmenu a:link {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#790000; text-decoration:none; font-weight:bold;}
+.topmenu a:visited {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; color:#790000; text-decoration:none; font-weight:bold;}
+.topmenu a:hover {font-family:Verdana, Arial, Helvetica, sans-serif font-size:11px; color:#000000; font-weight:bold;}
+
+.border {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: double;
+	border-right-style: double;
+	border-bottom-style: double;
+	border-left-style: double;
+	border-top-color:#C0943B;
+	border-right-color:#C0943B;
+	border-bottom-color: #C0943B;
+	border-left-color:#C0943B;
+	
+}
+
+.s1
+{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#000000;
+text-decoration:none;
+ 
+}
+
+.img {
+   padding:1px;
+   border:3px solid #021a40;
+   background-color:#ff0;
+}
+
+
+.accounts_combo{ border-style:solid; border-color:#C0943B; background-color:#FFFFCC; border-width:thin; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#333333; height:18px; width:200px;}
+.form_field_heading{ font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#333333;}
+.accounts_smalltxtfld {border:solid; border-color:#CCCC66; background-color:#FFFFCC; border-width:thin; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#333333; height:18px; width:100px;}
+.accounts_txtField{ border:solid; border-color:#C0943B; background-color:#F4E7BB; border-width:thin; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#333333; height:auto; width:100px;}
+.butt{border-color:#B64D13; background-color:#C0943B; font-weight:bold; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; border-width:1px; border-style:solid;}
+.sersch_table_head{font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#000000; font-weight:bold;}
+
+

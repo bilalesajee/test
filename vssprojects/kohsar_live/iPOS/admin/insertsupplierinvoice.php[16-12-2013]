@@ -1,0 +1,59 @@
+<?php
+include_once("../includes/security/adminsecurity.php");
+global $AdminDAO;
+/*echo "<pre>";
+print_r($_POST);
+echo "</pre>";
+exit;*/
+$id 		= 	$_REQUEST['id'];
+if(sizeof($_POST)>0)
+{
+	$supplier		=	$_POST['supplier'];
+	$billnumber		=	$_POST['billnumber'];
+	$datetime		=	strtotime($_POST['datetime']);
+	$description	=	filter($_POST['description']);
+	$image			=	$_FILES['image']['name'];
+	if($datetime < 0){
+    $msg.="<li>Please enter Correct date</li>";
+		}
+
+	if($supplier=='')
+	{
+		$msg.="<li>Please select supplier</li>";
+	}
+	if($billnumber=='')
+	{
+		$msg.="<li>Please enter bill number</li>";
+	}
+	if($_POST['datetime']=='')
+	{
+		$msg.="<li>Please enter date</li>";
+	}
+	if($msg)
+	{
+		echo $msg;
+		exit;
+	}
+	$fields	=	array('fksupplierid','billnumber','datetime','description','image');
+	$values	=	array($supplier,$billnumber,$datetime,$description,$image);
+	if($id!='-1')
+	{
+		$oldimage	 	=	$_POST['oldimage'];
+		if($image!='')
+		{
+			@unlink('../productimage/'.$oldimage);
+		}
+		else
+		{
+			$image=$oldimage;	
+		}
+		$values	=	array($supplier,$billnumber,$datetime,$description,$image);
+		$AdminDAO->updaterow("$dbname_detail.supplierinvoice",$fields,$values,"pksupplierinvoiceid='$id'");
+	}
+	else
+	{
+		$AdminDAO->insertrow("$dbname_detail.supplierinvoice",$fields,$values);
+	}
+		
+}
+?>

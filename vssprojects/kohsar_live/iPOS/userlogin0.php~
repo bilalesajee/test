@@ -1,0 +1,7 @@
+<?php
+echo 1;
+session_start();
+$_SESSION['a] = 123;
+var_dump($_SESSION);
+
+?>

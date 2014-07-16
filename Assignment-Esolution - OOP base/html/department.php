@@ -36,7 +36,7 @@
     <td><input name="deptH" id="deptH" type="text"></td>
   </tr>   
   <tr>
-         <td colspan="2" align="center"><input name="" type="button" value="save" id="dept"></td>
+         <td colspan="2" align="center"><input name="" type="button" value="save" id="btndept"></td>
   </tr>    
 </table>
 </form>

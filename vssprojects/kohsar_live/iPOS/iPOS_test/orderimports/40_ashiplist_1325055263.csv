@@ -1,0 +1,14 @@
+Barcode,Item,Description,Weight,BrandID,SupplierID,CountryID,LastSalePrice,PriceLimit,AgreedPrice,Quantity,Deadline,LocationID,Comments,CustomerID,ClientInformation
+102,Doritos Corn Chips ,Cool Original,40,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+102,Doritos Corn Chips ,Chilli Heatwave ,40,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+103,Doritos Corn Chips ,Tangy Cheese,40,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+104,Doritos Corn Chips Bigger Bag ,Lightly Salted,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+105,Doritos Corn Chips Bigger Bag ,Tangy Cheese,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+444,Doritos Corn Chips Bigger Bag ,Hint Of Lime,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+105,Doritos Corn Chips Bigger Bag ,Cool Original,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+106,Doritos Corn Chips Bigger Bag ,Chilli Heatwave ,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+107,Hoola Hoops Crisp,Original,48,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+108,Hoola Hoops Crisp,Cheese and Onion,48,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+109,Hoola Hoops Crisp,Salt and Vinegar,48,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+101,Hoola Hoops Crisp,Salt and Vinegar,30,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+103,Los Amigos Tortilla Chips ,Jalapeno ,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation

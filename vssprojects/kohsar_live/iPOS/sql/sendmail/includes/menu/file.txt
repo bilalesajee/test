@@ -1,0 +1,14 @@
+SELECT
+						*
+					FROM
+						screen
+					  WHERE  fkmoduleid=2 ORDER BY displayorder  
+					  
+					;
+SELECT
+						 pksaleid,from_unixtime(datetime,'%d-%m-%y  %h:%m:%s') as datetime
+					FROM
+						 main_kohsar.sale 
+					  WHERE  countername='1' and status='3' order by pksaleid DESC  
+					  
+					;

@@ -1,0 +1,62 @@
+<?php
+session_start();
+include("includes/security/adminsecurity.php");
+global $AdminDAO;
+if(sizeof($_POST)>0)
+{
+	/*echo "<pre>";
+	print_r($_POST);
+	echo "</pre>";
+	exit;*/
+	$id				=	$_GET['new'];
+	$saleid			=	$_SESSION['tempsaleid'];
+	$ctype			=	$_POST['ctype'];
+	$firstname		=	trim(filter($_POST['newfname'])," ");
+	$lastname		=	trim(filter($_POST['newlname'])," ");		
+	$phone			=	trim(filter($_POST['newphone'])," ");
+	$nicno			=	trim(filter($_POST['nicno'])," ");
+	$customerid		=	$_POST['customerid'];
+	$taxnumber		=	trim(filter($_POST['taxnumber'])," ");
+	$ntn			=	trim(filter($_POST['ntn'])," ");
+	$companyname	=	trim(filter($_POST['company'])," ");
+	$address1		=	trim(filter($_POST['address1'])," ");
+	$address2		=	trim(filter($_POST['address2'])," ");
+	$fax			=	trim(filter($_POST['fax'])," ");
+	$email			=	trim(filter($_POST['email'])," ");
+	$addressbookid	=	$_POST['addressbookid'];
+	$field1			=	array('firstname','lastname','phone','fax','email','address1','address2','nic');
+	$data1			=	array($firstname,$lastname,$phone,$fax,$email,$address1,$address2,$nicno);
+	if($addressbookid !='' )
+	{
+		 $and=" AND pkaddressbookid<>'$addressbookid' ";	
+	}
+	$unique	=	$AdminDAO->getrows("$dbname_detail.addressbook","pkaddressbookid"," nic='$nicno' $and ");
+	if(sizeof($unique)>0)
+	{
+		echo "A customer with this NIC # $nicno already exists";
+		exit;
+	}
+	if($customerid!='' && $addressbookid !='')
+	{
+		
+		$AdminDAO->updaterow("$dbname_detail.addressbook",$field1,$data1," pkaddressbookid='$addressbookid' ");
+		$field2		=	array('title','taxnumber','ctype','ntn');
+		$data2		=	array($companyname,$taxnumber,$ctype,$ntn);
+		$AdminDAO->updaterow("$dbname_detail.account",$field2,$data2,"fkaddressbookid='$addressbookid'");
+		exit;
+	}
+	else
+	{
+		$insertid	=	$AdminDAO->insertrow("$dbname_detail.addressbook",$field1,$data1);
+		$field2		=	array('fkaddressbookid','title','taxnumber','ctype','ntn');
+		$data2		=	array($insertid,$companyname,$taxnumber,$ctype,$ntn);
+		$insertid2	=	$AdminDAO->insertrow("$dbname_detail.account",$field2,$data2);
+		
+	}
+}
+else
+{
+	echo "insufficient data";
+	exit;
+}
+?>

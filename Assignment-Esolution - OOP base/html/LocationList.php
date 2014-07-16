@@ -8,7 +8,7 @@ $array= $obj->fetch_result($query);
     <option  disabled="disabled" selected="selected">-please select location-</option>
     <?php foreach ($array as $location) {
         
-    } { ?>
+      ?>
         <option value="<?php echo $location['CODE']; ?>" id=""><?php echo $location['CITY']; ?></option> 	
     <?php } ?>
 </select>

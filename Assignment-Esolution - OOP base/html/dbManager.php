@@ -19,7 +19,6 @@ class dbmanager {
     }
 
     public function connect() {
-        //if ($this->link = mysql_connect($this->host, $this->user, $this->passward, $this->Dbname)) {
         if (!$this->link = new mysqli($this->host, $this->user, $this->passward, $this->Dbname)) {
             $this->DisplayError("cant,t connet to database");
         }
@@ -52,21 +51,37 @@ class dbmanager {
         extract($q);
         if ($hiddenID == '') {
             $query = "INSERT INTO $tablename(NAME,AGE,ADDRESS,EMAIL,LOC,DEPT,STATUS) VALUES('$name', '$age', '$address', '$email','$loc','$dept','$status')";
+                     
         } else {
-            echo $query = "update $tablename set NAME='$name',AGE='$age',ADDRESS='$address',EMAIL='$email',LOC='$loc',DEPT='$dept',STATUS='$status' where ID=$hiddenID";
+            $query = "update $tablename set NAME='$name',AGE='$age',ADDRESS='$address',EMAIL='$email',LOC='$loc',DEPT='$dept',STATUS='$status' where ID=$hiddenID";
+              $id=$hiddenID;
         }
         if ($this->query($query)) {
-            return TRUE;
+            if($hiddenID == ''){
+            $id= mysqli_insert_id($this->link);
+            }
+            $success=TRUE;
         } else {
+             $success=FALSE;
             return FALSE;
         }
-    }
+  $data=array('id'=>$id, 'name'=>$name, 'age'=>$age, 'address'=>$address, 'email'=>$email,'status'=>$status, 'success'=>$success);      
+  echo json_encode($data);  
+  
+        }
 
     public function saveLocation($q) {
         extract($q);
         $insertquery = "INSERT INTO $tablename(CODE,DETAIL,COUNTRY,CITY) VALUES('$locCode', '$Detail', '$country', '$city')";
         if ($this->query($insertquery)) {
-            return TRUE;
+            $id=  mysqli_insert_id($this->link);
+            $data['id']=$id;
+            $data['loc']=$locCode;
+            $data['detail']=$Detail;
+            $data['country']=$country;
+            $data['city']=$city;
+                    
+            echo json_encode($data);
         } else {
             return FALSE;
         }

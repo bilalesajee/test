@@ -82,7 +82,7 @@ $(document).ready(function(e) {
                 address = $('#Address').val(),
                 hiddenID = $('#hiddenid').val(),
                 loc = $('#loc').val(),
-                dept = $('#dept').val(),
+                dept = $('#departList').val(),
                 status = $('#status').val();
         var error = [];
         if (name == '')
@@ -112,37 +112,39 @@ $(document).ready(function(e) {
             $('#ErrorMSg').hide();
             //insert data into database
             $.ajax({url: "insert.php", data: {name: name, age: age, email: email, loc: loc, dept: dept, status: status, address: address, hiddenID: hiddenID, tablename: 'person'}, async: false, type: 'POST', success: function(result) {
-                    //result = JSON.parse(result);
-                    //$('#ErrorMSg').html(result.msg);
-                    //alert(result.s);
-                    if (result.success === true) {
+                    result = JSON.parse(result);
+                      console.log(result);
+                     $('#ErrorMSg').html(result.msg);
+                     if (result.success === true) {
                         if ($('#hiddenid').val() == '') {
                             var tds = [];
-                            $.each(result.data, function(i, value)
+                            $.each(result, function(i, value)
                             {
-                                /*   if (i == 'status') {
-                                 c = (value == 1) ? 'Active' : 'In Active';
-                                 value = c;
-                                 }*/
-                                tds.push('<td  align="center">' + value + '</td>')
+                                if(i != 'success'){
+                                if(i == 'status'){
+                                    c=(value==1) ? 'Active' : 'In Active';
+                                    value=c;
+                                }
+                                tds.push('<td  align="center">' + value + '</td>');}
                             });
-                            tds.push('<td  align="center"><span id=' + result.data.id + ' name="empBtnDel"/> Delete</span>|<a href="#"  onClick="RowEdit(\'' + result.data.id + '\')"> Edit</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.data.id + '\'/></td>')
-                            var tr = '<tr id="row' + result.data.id + '">' + tds.join('') + '</tr>';
+                            tds.push('<td  align="center"><a href="#" onclick="RowDelete_employee(\'' + result.id + '\')" >Delete</a>|<a href="#"  onClick="rowEdit_employee(\'' + result.id + '\')"> Edit</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.id + '\'/></td>')
+                            var tr = '<tr id="row' + result.id + '">' + tds.join('') + '</tr>';
                             $('#tgrid tbody').append(tr);
                         }
                         else
                         {
-                            $("#row" + result.data.id + "> td").each(function(i, element) {
+                            $("#row" + result.id + "> td").each(function(i, element) {
                                 var row = ['id', 'name', 'age', 'address', 'email', 'status'];
                                 if (row.length > i) {
-                                    $(element).html(result.data[row[i]]);
+                                    $(element).html(result[row[i]]);
                                 }
                             });
-                        }
-                     }
+                        }  
+                    //}
                     $('#hiddenid').val('');
                     formhide();
                 }
+            }
             });
         }
         else {
@@ -164,24 +166,25 @@ $(document).ready(function(e) {
             $.ajax({url: "insert.php", data: {locCode: locCode, Detail: Detail, country: country, city: city, tablename: 'location'}, async: false, type: 'POST', success: function(data) {
                     $('#location').hide(300);
                     $("#frmlocation").trigger('reset');
-                    //data = JSON.parse(data);
-                    //row add into form
-                    /*
+                     data = JSON.parse(data);
+                     //row add into form
+                     console.log(data);
                      var tds = [];
+                     tds.push('<td  align="center">' + data.id + '</td>')
+                     tds.push('<td  align="center">' + data.loc + '</td>')
+                     tds.push('<td  align="center">' + data.detail + '</td>')
+                     tds.push('<td  align="center">' + data.country + '</td>')
+                     tds.push('<td  align="center">' + data.city + '</td>')
                      
-                     $.each(data.result, function(i, value)
-                     {
-                     tds.push('<td  align="center">' + value + '</td>')
-                     });
-                     tds.push('<td  align="center"><a href="#" onclick="RowDelete(\'' + data.result.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + data.result.id + '\'/></td>');
+                     tds.push('<td  align="center"><a href="#" onclick="RowDelete(\'' + data.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + data.id + '\'/></td>');
                      
-                     var tr = '<tr id="row' + data.result.id + '">' + tds.join() + '</tr>';
+                     var tr = '<tr id="row' + data.id + '">' + tds.join() + '</tr>';
                      $('#tlocation tbody').append(tr);
-                     //end row add code */
+                     //end row add code  
                 }});
         }
     });
-    $('#dept').click(function() {
+    $('#btndept').click(function() {
         var deptName = $('#deptName').val(),
                 deptCode = $('#deptCode').val(),
                 deptH = $('#deptH').val();
@@ -193,19 +196,16 @@ $(document).ready(function(e) {
                     $('#DeptForm').hide(300);
                     $("#depForm").trigger('reset');
                     //row add into form
-
-                    //result = JSON.parse(data);
-                    /* console.log(data);
+                    result = JSON.parse(data);
+                    console.log(result);
                     var tds = [];
-                    $.each(result.data, function(i, value)
-                    {
-                        tds.push('<td align="center">' + value + '</td>')
-                    });
-                    tds.push('<td align="center"><a href="#" onclick="delDepartment(\'' + data.data.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.data.id + '\'/></td>');
-
-                    var tr = '<tr id="row' + result.data.id + '" >' + tds.join() + '</tr>';
+                    $.each(result,function(i,value){
+                        tds.push('<td align="center">' + value + '</td>');
+                    })
+                    tds.push('<td align="center"><a href="#" onclick="RowDelete_department(\'' + result.id + '\')" >Delete</a><input type="checkbox" name="chekboxDel" class="chkdel" value=\'' + result.id + '\'/></td>');
+                     var tr = '<tr id="row' + result.id + '" >' + tds.join() + '</tr>';
                     $('#tdept tbody').append(tr);
-                    //end row add code */
+                    //end row add code 
                 }});
 
         }
@@ -236,7 +236,7 @@ function rowEdit_employee(id)
         }});
 }
 //function to delete data from database
-function RowDelete_employee(id){
+function RowDelete_employee(id) {
 
     $.ajax({url: "delete.php", data: {id: id, tablename: 'person'}, type: 'POST', success: function(data) {
             //$('#ErrorMSg').html(data.msg).show(1000);
@@ -247,7 +247,7 @@ function RowDelete_employee(id){
         }
     });
 }
-function RowDelete_location(id){
+function RowDelete_location(id) {
 
     $.ajax({url: "delete.php", data: {id: id, tablename: 'location'}, success: function(data) {
             //$('#ErrorMSg').html(data.msg).show(1000);
@@ -256,17 +256,12 @@ function RowDelete_location(id){
         },
     });
 }
-function RowDelete_department(id){
+function RowDelete_department(id) {
 
     $.ajax({url: "delete.php", data: {id: id, tablename: 'department'}, success: function(data) {
             //$('#ErrorMSg').html(data.msg).show(1000);
             //console.log($("#row" + id));
             $("#row" + id).remove();
-        },
-        statusCode: {
-            404: function() {
-                alert("page not found");
-            }
         },
     });
 }
@@ -297,7 +292,7 @@ function multiDel_employee() {
         delId.push(id);
         for (i = 0; i <= delId.length; i++) {
             $("#row" + delId[i]).remove();
-          
+
         }
     });
     $.post("delete.php", {id: delId.join(), tablename: 'person'});
@@ -347,7 +342,7 @@ function location_list() {
 }
 function dept_list() {
     $.ajax({url: "deptList.php", async: false, type: 'POST', success: function(data) {
-            $('#depList').html(data);
+            $('#departList').html(data);
         }});
 
 }

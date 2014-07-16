@@ -1,0 +1,156 @@
+<?php
+include_once("../includes/security/adminsecurity.php");
+global $AdminDAO;
+$id	=	$_GET['id'];
+$qstring=$_SESSION['qstring'];
+if($id!='-1')
+{
+	$creditinvoices = $AdminDAO->getrows("$dbname_detail.creditinvoices","serialno,FROM_UNIXTIME(invoicedate,'%d-%m-%Y') invoicedate,FROM_UNIXTIME(fromdate,'%d-%m-%Y') fromdate,FROM_UNIXTIME(todate,'%d-%m-%Y') todate,fkaccountid,invoicestatus,taxpercentage"," pkcreditinvoiceid='$id'");
+	foreach($creditinvoices as $invoice)
+	{
+		$serialno 	= 	$invoice['serialno'];
+		$invdate 	= 	$invoice['invoicedate'];
+		$fromdate 	= 	$invoice['fromdate'];
+		$todate 	= 	$invoice['todate'];
+		$customer	=	$invoice['fkaccountid'];
+		$status	 	= 	$invoice['invoicestatus'];
+		$tax		=	$invoice['taxpercentage'];
+	}
+}
+// selecting customers
+$customersarray		= 	$AdminDAO->getrows("$dbname_detail.account,$dbname_detail.addressbook","id,CONCAT(firstname,' ',lastname) name", "fkaddressbookid=pkaddressbookid");
+$customersel		=	"<select name=\"customerid\" id=\"customerid\" style=\"width:150px;\">";
+for($i=0;$i<sizeof($customersarray);$i++)
+{
+	$customername	=	$customersarray[$i]['name'];
+	$customerid		=	$customersarray[$i]['id'];
+	$select			=	"";
+	if($customerid==$customer)
+	{
+		$select = "selected=\"selected\"";
+	}
+	$customersel2	.=	"<option value=\"$customerid\" $select>$customername</option>";
+}
+$customers			=	$customersel.$customersel2."</select>";
+// end customers
+if($serialno=='')
+{
+	// autofill max serial no
+	$serialno	=	1;
+	$serno		=	$AdminDAO->getrows("$dbname_detail.creditinvoices","MAX(pkcreditinvoiceid) sno","1");
+	$serial		=	$serno[0]['sno'];
+	$serialno	+=	$serial;
+}
+?>
+
+<script language="javascript">
+jQuery().ready(function() 
+{
+	$("#invoicedate").mask("99-99-9999");
+	$("#fromdate").mask("99-99-9999");
+	$("#todate").mask("99-99-9999");
+	document.getElementById('fromdate').focus();
+});
+function hideform()
+{
+	document.getElementById('creditfrmdiv').style.display	=	'none';	
+}
+</script>
+<div id="error" class="notice" style="display:none"></div>
+<div id="creditfrmdiv" style="display: block;">
+<br>
+<form id="creditform" style="width: 920px;" class="form">
+<fieldset>
+<legend>
+	<?php
+    if($id!="-1")
+    { echo "Edit Credit Invoice"." ".$serialno;}
+    else
+    { echo "Add Credit Invoice";}	
+    ?>
+</legend>
+<div style="float:right">
+<span class="buttons">
+    <button type="button" class="positive" onclick="addinvoice();">
+        <img src="../images/tick.png" alt=""/> 
+        <?php if($id=='-1') {echo "Save";} else {echo "Update";} ?>
+    </button>
+     <a href="javascript:void(0);" onclick="hidediv('creditfrmdiv');" class="negative">
+        <img src="../images/cross.png" alt=""/>
+        Cancel
+    </a>
+</span>
+</div>
+<table cellpadding="0" cellspacing="2" width="100%">
+	<tbody>
+	<tr>
+		<td>Serial #: </td>
+		<td>
+
+		<input name="serialno" id="serialno" value="<?php echo $serialno; ?>" onkeydown="javascript:if(event.keyCode==13) {addinvoice(); return false;}" type="text"></td>
+	</tr>
+	<tr>
+	  <td>Customer:</td>
+	  <td><?php echo $customers;?></td>
+	  </tr>
+	<tr>
+		<td>From Date: </td>
+		<td colspan="2"><div id="error1" class="error" style="display:none; float:right;"></div>
+		<input name="fromdate" id="fromdate" type="text" value="<?php echo $fromdate; ?>" onkeydown="javascript:if(event.keyCode==13) {todate.focus(); return false;}" size="8"> dd-mm-yyyy</td>
+	</tr>
+	<tr>
+		<td>To Date </td>
+		<td colspan="2"><div id="error2" class="error" style="display:none; float:right;"></div>
+        <input name="todate" id="todate" type="text" value="<?php echo $todate; ?>" onkeydown="javascript:if(event.keyCode==13) {addinvoice();return false;}" size="8"> dd-mm-yyyy</td>
+	</tr>
+	<tr>
+	  <td>Invoice Date: </td>
+	  <td><input name="invoicedate" id="invoicedate" value="<?php echo $invdate; ?>" onkeydown="javascript:if(event.keyCode==13) {addinvoice(); return false;}" type="text" size="8"/> dd-mm-yyyy</td>
+	  </tr>
+	<?php /*?><tr>
+	  <td>Tax Percentage: </td>
+	  <td><input name="taxpercentage" id="taxpercentage" value="<?php echo $tax; ?>" onkeydown="javascript:if(event.keyCode==13) {addinvoice(); return false;}" type="text" /></td>
+	  </tr><?php */?>
+      <input type="hidden" name="taxpercentage" id="taxpercentage" value="16" />
+	<?php /*?><tr>
+	  
+	  <td>Status: </td>
+	  <td>Not Posted <input name="status" type="radio" value="1" <?php if($status==1) echo "checked"; ?>> Posted <input name="status" type="radio" value="2" <?php if($status==2) echo "checked"; ?>></td>
+	  </tr><?php */?>
+	<tr>
+	  <td colspan="2" align="center">
+	      <div class="buttons">
+            <button type="button" class="positive" onclick="addinvoice();">
+                <img src="../images/tick.png" alt=""/> 
+                <?php if($id=='-1') {echo "Save";} else {echo "Update";} ?>
+            </button>
+             <a href="javascript:void(0);" onclick="hidediv('creditfrmdiv');" class="negative">
+                <img src="../images/cross.png" alt=""/>
+                Cancel
+            </a>
+          </div>
+        </td>				
+	  </tr>
+	</tbody>
+</table>
+<input type="hidden" name="id" id="id" value ="<?php echo $id;?>" />
+</fieldset>	
+</form>
+</div>
+<script language="javascript">
+function addinvoice()
+{
+	var fromdate		=	document.getElementById('fromdate').value;
+	var todate			=	document.getElementById('todate').value;
+	var taxpercentage	=	document.getElementById('taxpercentage').value;
+	var serialno		=	document.getElementById('serialno').value;
+	var invoicedate		=	document.getElementById('invoicedate').value;
+	var customerid		=	document.getElementById('customerid').value;
+	var serialno		=	document.getElementById('serialno').value;
+	var id				=	document.getElementById('id').value;
+	var wid				=	800;
+	var hig				=	600;
+	var display='toolbar=0,location=0,directories=1,menubar=1,scrollbars=1,resizable=1,width='+wid+',height='+hig+',left=100,top=25';
+ 	window.open('creditorinvoice.php?fromdate='+fromdate+'&todate='+todate+'&taxpercentage='+taxpercentage+'&customerid='+customerid+'&serialno='+serialno+'&invoicedate='+invoicedate+'&id='+id,'Creditor invoice',display); 	 
+}
+</script>

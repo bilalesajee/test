@@ -1,0 +1,32 @@
+<html>
+<head>
+      <script type="text/javascript" src="tokenizerassets/jquery.js"></script>
+
+    <script type="text/javascript" src="tokenizerassets/jquery.tokenizer.js"></script>
+
+    <link rel="stylesheet" href="tokenizerassets/token-input.css" type="text/css">
+    <link rel="stylesheet" href="tokenizerassets/token-input-horizental.css" type="text/css">
+
+
+    <script type="text/javascript">
+    $(document).ready(function() 
+	{
+		 maketoken('tokenize1','res.php','horizental','s');
+		 maketoken('tokenize2','res.php','','m');
+		 maketoken('tokenize3','res.php','horizental','m');
+		 maketoken('tokenize4','res.php','','m');
+		 
+    });
+    </script>
+</head>
+
+<body>
+<div>
+	<h2>Token Style</h2>
+	<input type="text" id="tokenize1" name="xyz" /><br>
+	Vertical<input type="text" id="tokenize2" name="abc" /><br>
+	<input type="text" id="tokenize3" name="wy" /><br>
+	Vertical<input type="text" id="tokenize4" name="somename" /><br>
+</div>
+</body>
+</html>

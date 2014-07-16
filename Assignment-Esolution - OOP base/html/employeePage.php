@@ -38,7 +38,7 @@
                             <td><textarea cols="15" rows="5" id="Address" name="address"></textarea></td>
                         </tr>
                         <tr><td>Location</td><td><div id="locList"></div></td></tr>
-                        <tr><td>Department</td><td><div id="depList"></div></td></tr>
+                        <tr><td>Department</td><td><div id="departList"></div></td></tr>
                         <tr>
                             <td>Status</td>  
                             <td><select  id="status">

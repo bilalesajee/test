@@ -1,0 +1,84 @@
+<?php
+include_once("../includes/security/adminsecurity.php");
+include_once("dbgrid.php");
+global $AdminDAO;
+// customers
+$customers		=	$AdminDAO->getrows("customer","pkcustomerid id,concat(firstname,' ',lastname) customername","ctype=1");
+$customersel		=	"<select name=\"cid\" id=\"cid\" style=\"width:100px;\" ><option value=\"\">Select Customer</option>";
+for($i=0;$i<sizeof($customers);$i++)
+{
+	$customername	=	$customers[$i]['customername'];
+	$customerid		=	$customers[$i]['id'];
+	$customersel2	.=	"<option value=\"$customerid\" $select>$customername</option>";
+}
+$customer			=	$customersel.$customersel2."</select>";
+// end customers
+?>
+<script language="javascript" type="text/javascript">
+ jQuery(function($)
+ {
+	 $("#fromdate").datepicker({dateFormat: 'dd-mm-yy'});
+	 $("#todate").datepicker({dateFormat: 'dd-mm-yy'});
+ });
+function showreport()
+{
+	sd		=	document.getElementById('fromdate').value;
+	ed		=	document.getElementById('todate').value;
+	cust	=	document.getElementById("cid").value;
+	window.open('generatehotelreport.php?fromdate='+sd+'&todate='+ed+'&cid='+cust,"myWin","menubar,scrollbars,left=30px,top=40px,height=400px,width=600px");
+}
+</script>
+<div id="error" class="notice" style="display:none"></div>
+<div id="reportsdiv">
+<form name="frmreport" id="frmreport" style="width:920px;" class="form">
+<fieldset>
+<legend>
+	Hotel Reports</legend>
+<div style="float:right">
+<span class="buttons">
+    <button type="button" class="positive" onclick="showreport();">
+        <img src="../images/tick.png" alt=""/> 
+        View Report
+    </button>
+     <a href="javascript:void(0);" onclick="hidediv('reportsdiv');" class="negative">
+        <img src="../images/cross.png" alt=""/>
+        Cancel
+    </a>
+</span>
+</div>
+	<table width="100%">
+        <tr>
+        	<td width="8%">
+            	From Date: 
+            </td>
+            <td>
+            <input type="text" class="text" name="fromdate" id="fromdate" value="<?php echo date('d-m-Y',time())?>">
+            </td>
+        </tr>
+        <tr>
+          <td> End Date: </td>
+          <td><input type="text" class="text"  name="todate"id="todate" value="<?php echo date('d-m-Y',time())?>"></td>
+        </tr>
+        <tr>
+          <td> Customer: </td>
+          <td><?php echo $customer;?></td>
+        </tr>
+        <tr>
+        	<td colspan="2">
+            	<div class="buttons">
+                    <button type="button" class="positive" onclick="showreport();">
+                        <img src="../images/tick.png" alt=""/> 
+                        View Report
+                    </button>
+                     <a href="javascript:void(0);" onclick="hidediv('reportsdiv');" class="negative">
+                        <img src="../images/cross.png" alt=""/>
+                        Cancel
+                    </a>
+                  </div>
+            </td>
+        </tr>
+    </table>
+    </fieldset>
+</form>
+</div>
+<div id="displayreport"></div>

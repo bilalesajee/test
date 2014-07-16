@@ -1,0 +1,64 @@
+<?php
+set_time_limit(0);
+/*********************************************************************************
+*   Description: This file contains two functions that execute queries,
+*   Who/When: WA, Aug "18" 2012
+**********************************************************************************/
+class DBManager 
+{	
+	//class variable that represents the database connection.
+	var $dbhost = '';
+	var $dbusername = '';
+	var $dbpassword = '';
+	var $dbname	=	'';
+	function __construct()
+  	{
+		//calling function that return resource id
+		$this -> connect();
+	}
+	/*********************************************************************************
+	*   Description: This function takes  "$db_server, $database_name, $database_password, $database_user" 
+	*   and return $conn.
+	*   Who/When: WA, Aug "18" 2012,
+	**********************************************************************************/	
+	function connect()
+	{
+		global $uname, $passwrd, $dbhost, $dbname_main;
+		$this->dbhost		=	$dbhost;
+		$this->dbusername 	=	$uname;
+		$this->dbpassword	=	$passwrd;
+		$this->dbname		=	$dbname_main;
+		mysql_connect($this->dbhost, $this->dbusername, $this->dbpassword) or die (mysql_error(). " could not connect");
+		mysql_select_db($this->dbname) or die (mysql_error(). " could not select db");;
+	}
+	/*********************************************************************************
+	*   Description: This function execute queries that return results,
+	*   Who/When: WA, Aug "18" 2012,
+	*********************************************************************************/
+	function executeQuery($query)
+	{
+		$this->connect();
+		//executing query like select,show, describe etc 
+		$result = mysql_query($query) or die (mysql_error()." error executing query: ". $query);
+		// closes the connection object		
+		mysql_close();
+		//returning result set to calling function
+		 return ($result);
+
+	}//end of function  executeQuery($query)	
+	/*********************************************************************************
+	*   Description: This function execute queries that donot return results e.g. insert, delete etc,
+	*   Who/When: WA, Aug "18" 2012,
+	**********************************************************************************/
+	function executeNonQuery($query, $dbname='')
+	{
+		$this->connect($dbname);
+		//executing query like select,show, describe etc 
+		$result = mysql_query($query) or die (mysql_error()."<br>");
+		// closes the connection object		
+		mysql_close();
+		//when query execute successfully 
+		return true;
+	} //end of function  executeNoneQuery($query)		
+} // end of class DbManager  
+?>

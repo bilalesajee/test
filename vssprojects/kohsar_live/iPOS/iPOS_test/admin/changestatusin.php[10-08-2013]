@@ -1,0 +1,105 @@
+<?php
+include_once("../includes/security/adminsecurity.php");
+include_once("../surl.php");
+$id	=	$_REQUEST['ids'];
+$idarr	= 	explode(",", $id);
+$invoice_status	=	$_REQUEST['invoice_status'];
+/*echo "<pre>";
+print_r($_GET);
+echo "</pre>";*/
+ $q = "select invoice_status from $dbname_detail.supplierinvoice where pksupplierinvoiceid = '$idarr[1]'";
+$rres = mysql_query($q);
+$r=mysql_fetch_array($rres);
+$status			=	$r['invoice_status'];
+
+if($status == 1 and $invoice_status=='close')
+{
+	
+	echo $msq= 'Status Allready Closed';
+	exit;
+	
+}
+	
+	
+else  if($status == 0 and $invoice_status=='open')
+	{
+	echo $msq= 'Status Allready Open';
+	exit;
+	}
+	
+	
+	if($status == 1)
+{
+	$st= '0';
+	$update= mysql_query("update  $dbname_detail.supplierinvoice set invoice_status = '$st' , invoice_reopen_date='".time()."' where  pksupplierinvoiceid = '$idarr[1]' ");
+     $msq= 'Status Changed From Closed To Open';;
+}
+	else  if($status == 0)
+	{
+	$st= '1';
+	 $update= mysql_query("update  $dbname_detail.supplierinvoice set invoice_status = '$st' , invoice_close_date='".time()."' where  pksupplierinvoiceid = '$idarr[1]' ");
+	 $msq= 'Status Changed From Open To Closed';
+	 $query_invoice			=	"SELECT SUM( s.quantity * s.priceinrs ) AS invoice_amount,s.fksupplierid as supplierid,s.fksupplierinvoiceid as invoiceid,sup.billnumber,sup.datetime
+
+              FROM $dbname_detail.stock s
+
+			  left join $dbname_detail.supplierinvoice sup  on sup.pksupplierinvoiceid = s.fksupplierinvoiceid
+
+              WHERE s.fksupplierinvoiceid = '$idarr[1]'";
+
+             $result_invoice		=	$AdminDAO->queryresult($query_invoice);
+
+
+
+             $invoice_amount			=	$result_invoice[0]['invoice_amount'];
+
+			  $supplierid			=	$result_invoice[0]['supplierid'];
+
+			   $invoiceid			=	$result_invoice[0]['invoiceid'];
+
+			    $billnumber			=	$result_invoice[0]['billnumber'];
+				$invdate			=	date('d-m-Y', $result_invoice[0]['datetime']);
+				
+$checkdata=$invoice_link= file_get_contents($Url_admin."invoice_voucher&invoiceid={$invoiceid}&supplierid={$supplierid}&invoice_amount={$invoice_amount}&billnumber={$billnumber}&invdate={$invdate}&location=0");
+ if($checkdata>0){
+		 $update2= mysql_query("update  $dbname_detail.supplierinvoice set accdatasent = 1  where  pksupplierinvoiceid = '$invoiceid' ");
+		 } 
+
+	}
+	
+	
+		//echo "update  dbname_detail.supplierinvoice set invoice_status = '$st' where  pksupplierinvoiceid = '$idarr[1]' ";
+		
+	 
+     echo $msq;
+
+/*if(sizeof($_POST)>0)
+{
+	$id	=	$_REQUEST['ids'];
+//	echo $res			=	$AdminDAO->getrows("$dbname_detail.supplierinvoice","invoice_status","pksupplierinvoiceid = '$id'");
+	  // $status			=	$res[0]['invoice_status'];
+	$idarr	= 	explode(",", $id);
+	
+	
+	
+	
+	$var	=	sizeof($idarr)-1;
+	for($i=1; $i<=$var; $i++)
+	{
+		if($i==1)
+		continue;
+
+		$status			=	$_POST['status'];
+	
+		$fields			=	array('invoice_status');
+		$data			=	array($status);
+		$AdminDAO->updaterow("$dbname_detail.supplierinvoice",$fields,$data, "pksupplierinvoiceid = '$idarr[$i]'");
+	
+	}	
+}
+else
+{
+	echo "Unknown Value";
+	exit;		
+}*/
+?>

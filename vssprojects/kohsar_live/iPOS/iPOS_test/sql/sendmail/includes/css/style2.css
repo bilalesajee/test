@@ -1,0 +1,27 @@
+@charset "utf-8";
+*{
+	margin:0;
+	padding:0;
+}
+body {
+	font-size: 12px;
+	font-family:"Times New Roman", Times, serif;
+}
+.simplereport, .simplereport td {
+	font-size:14px;
+	border:1px solid #666;
+	border-collapse:collapse;
+	padding:2px 4px 2px 2px;
+}
+.simplereport th {
+	padding:2px 4px 2px 2px;
+	font-size:14px;
+	text-transform:uppercase;
+	font-weight:bold;
+	color:#fff;
+	background:#000;
+}
+.simplereport table{
+	border:none;
+	border-top:1px solid #000;
+}

@@ -1,0 +1,12 @@
+Barcode,Item,Description,Weight,Unit,BrandName,SupplierCompanyName,Country Name,LastSalePrice,PriceLimit,AgreedPrice,Quantity,Deadline,LocationStoreName,Comments,CustomerName,ClientInformation
+151,LCD,,,5,,,,,,,5,,,,,ClientInformation
+152,Laptop,,,5,,,,,,,5,,,,,ClientInformation
+153,scaner,,,5,,,,,,,5,,,,,ClientInformation
+154,tubelight ,,,5,,,,,,,5,,,,,ClientInformation
+155,telefone ,,,5,,,,,,,5,,,,,ClientInformation
+156,vire ,,,5,,,,,,,5,,,,,ClientInformation
+157,cable,,,5,,,,,,,5,,,,,
+158,internet,,,5,,,,,,,5,,,,,
+159,cup,,,5,,,,,,,5,,,,,
+160,pot,,,5,,,,,,,5,,,,,
+170,tissue ,,,5,,,,,,,5,,,,,

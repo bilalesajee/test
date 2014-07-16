@@ -1,0 +1,103 @@
+<?php
+////////////////////////////////////////////////////////////////		  
+$server = 'localhost';
+$server_user = 'posapp';
+$server_pwd = 'posapp';
+////////////////////////////////////////////////////////////////
+$dbname_detail=$dbname_server='main_kohsar';
+$get_option= date('d-m-y', strtotime('-1 day'));
+$dbh_server = new mysqli($server, $server_user, $server_pwd, $dbname_server);
+if($dbh_server->connect_errno > 0){
+	echo "Error";
+	echo $dbh_server->connect_error;
+}else{
+	 
+	 
+	 
+//////////////////////////////////////////////////////////STOCK MONITOR/////////////////////////////////////////////////////////////////////////////////////////////////////
+$querygm1 = "INSERT INTO $dbname_detail.stockmonitor ( trans_id,quantity,price,fkbarcodeid ,fksupplierid ,fkstoreid , fkemployeeid ,brand_id ,updatetime ,
+  product_id ,  fksupplierinvid,addtime,type ) SELECT  fksaleid , sd.quantity ,  priceinrs ,fkbarcodeid  ,fksupplierid ,fkstoreid  ,  fkemployeeid ,
+  fkbrandid , addtime , fkproduct_id , fksupplierinvoiceid , '".time()."','dsi'  FROM    $dbname_detail.stock st ,$dbname_detail.saledetail sd where from_unixtime(updatetime,'%d-%m-%y')='$get_option' and pkstockid=fkstockid and from_unixtime(timestamp,'%d-%m-%y')='$get_option' and sd.quantity >0  ";
+ $dbh_server->query($querygm1);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+$querygm2 = "INSERT INTO $dbname_detail.stockmonitor ( trans_id,quantity,price,fkbarcodeid ,fksupplierid ,fkstoreid , fkemployeeid ,brand_id ,updatetime ,
+  product_id ,  fksupplierinvid,addtime,type ) SELECT  fksaleid , sd.quantity ,  priceinrs ,fkbarcodeid  ,fksupplierid ,fkstoreid  ,  fkemployeeid ,
+  fkbrandid , addtime , fkproduct_id , fksupplierinvoiceid , '".time()."','sr'  FROM    $dbname_detail.stock st ,$dbname_detail.saledetail sd where from_unixtime(updatetime,'%d-%m-%y')='$get_option' and pkstockid=fkstockid and from_unixtime(timestamp,'%d-%m-%y')='$get_option' and sd.quantity<0  ";
+ $dbh_server->query($querygm2);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ $querygm3 = "INSERT INTO $dbname_detail.stockmonitor ( trans_id,quantity,price,fkbarcodeid ,fksupplierid ,fkstoreid , fkemployeeid ,brand_id ,updatetime ,
+  product_id ,  fksupplierinvid,addtime,type ) SELECT  pkstockid , quantity ,  priceinrs ,fkbarcodeid  ,fksupplierid ,fkstoreid  ,  fkemployeeid ,
+  fkbrandid , addtime , fkproduct_id , fksupplierinvoiceid , '".time()."','ti'  FROM    $dbname_detail.stock st where from_unixtime(addtime,'%d-%m-%y')='$get_option'  and fkconsignmentdetailid>0  ";
+ $dbh_server->query($querygm3);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+
+
+
+                $stockQuantity=0;
+                 $querygmj = "SELECT fkbarcodeid FROM $dbname_detail.stockmonitor where 1=1 group by fkbarcodeid ";
+                  $resultj = $dbh_server->query($querygmj);
+               while($uniquj=$resultj->fetch_assoc()){
+              $querygma = "SELECT   sum(quantity) q FROM $dbname_detail.stockmonitor where type='gnr' and fkbarcodeid='".$uniquj['fkbarcodeid']."' ";
+              $result2a = $dbh_server->query($querygma);
+              $uniquea=$result2a->fetch_assoc();   
+              /*echo "<br>";	
+			  echo $uniquea['q'].'1';*/
+			  $stockQuantity=$uniquea['q'];
+	          $querygmb = "SELECT sum(quantity) q FROM $dbname_detail.stockmonitor where type='pnr' and fkbarcodeid='".$uniquj['fkbarcodeid']."' ";
+               $result2b = $dbh_server->query($querygmb);  
+	           $uniqueb=$result2b->fetch_assoc();
+			/*   echo "<br>";	
+			   echo $uniqueb['q'].'2';*/
+			   $stockQuantity=$stockQuantity-$uniqueb['q'];
+	           $querygmc = "SELECT sum(quantity) q FROM $dbname_detail.stockmonitor where type='dsi' and fkbarcodeid='".$uniquj['fkbarcodeid']."' ";
+                $result2c = $dbh_server->query($querygmc);
+                $uniquec=$result2c->fetch_assoc();
+	  	    /*   echo "<br>";	
+			    echo $uniquec['q'].'3';	*/
+				$stockQuantity=$stockQuantity-$uniquec['q'];
+                $querygmd = "SELECT   sum(quantity) q FROM $dbname_detail.stockmonitor where type='sr' and fkbarcodeid='".$uniquj['fkbarcodeid']."' ";
+                 $result2d = $dbh_server->query($querygmd);
+                 $uniqued=$result2d->fetch_assoc();
+	        /*     echo "<br>";
+	             echo $uniqued['q'].'4';	*/
+				 $stockQuantity=$stockQuantity+$uniqued['q'];
+	            $querygme = "SELECT   fkbarcodeid,sum(quantity) q     FROM $dbname_detail.stockmonitor where type='ti' and fkbarcodeid='".$uniquj['fkbarcodeid']."' ";
+                $result2e = $dbh_server->query($querygme);
+                $uniquee=$result2e->fetch_assoc();
+            	/*echo "<br>";	
+				echo $uniquee['q'].'5';	
+	            echo "<br>";	*/
+	            $stockQuantity=$stockQuantity+$uniquee['q'];
+		  
+          $query_bal_update = "SELECT fkbarcodeid FROM $dbname_detail.stockbalance where fkbarcodeid='".$uniquj['fkbarcodeid']."' ";
+          $res_bal = $dbh_server->query($query_bal_update);
+          $check_row=$res_bal->fetch_assoc();
+	       if($check_row['fkbarcodeid']==''){
+		    $query_bal_update1 = "insert into $dbname_detail.stockbalance (cl_stock,fkbarcodeid) values ('$stockQuantity','".$uniquj['fkbarcodeid']."') ";
+           $dbh_server->query($query_bal_update1);   
+			   
+			   }else{
+			$query_bal_update1 = "update  $dbname_detail.stockbalance set cl_stock='$stockQuantity' where fkbarcodeid='".$uniquj['fkbarcodeid']."' ";
+            $dbh_server->query($query_bal_update1);	   
+				   
+				   }
+
+	      
+	  
+	    
+	  
+	  }
+
+
+$Updatebrand = "update $dbname_detail.stockmonitor,main.barcodebrand set brand_id=fkbrandid  where $dbname_detail.stockmonitor.fkbarcodeid=main.barcodebrand.fkbarcodeid and brand_id=0 ";
+  $dbh_server->query($Updatebrand);
+  
+ $Updateproduct = "update $dbname_detail.stockmonitor,main.barcode set product_id=fkproductid  where $dbname_detail.stockmonitor.fkbarcodeid=main.barcode.pkbarcodeid and product_id=0 ";
+  $dbh_server->query($Updateproduct);
+  
+	}
+?>

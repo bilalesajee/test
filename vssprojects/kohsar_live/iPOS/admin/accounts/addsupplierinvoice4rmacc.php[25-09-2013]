@@ -1,0 +1,104 @@
+<?php
+
+session_start();
+
+$_SESSION = array(
+    "storeid" => 3,
+    "siteconfig" => 2,
+    "countername" => -1,
+    "siteconfig" => 2,
+    "addressbookid" => 40,
+    "name" => 'System Admin',
+    "admin_section" => 'Admin logged in',
+    "groupid" => 6,
+    "groupname" => 'Administrator',);
+	
+     include("../../includes/security/adminsecurity.php");
+
+	
+
+     ob_start();
+
+
+
+//include_once("../../includes/security/adminsecurity.php");
+
+     global $AdminDAO;
+
+	$invoice_no		=	$_REQUEST['invoice_no'];
+
+	$supplier		=	preg_replace('/^(0)+/', '', $_REQUEST['supplier'] );
+
+	$billnumber		=	$_REQUEST['bill_no'];
+	$usid		=	$_REQUEST['uid'];
+
+	$amount		=	(int)$_REQUEST['amount'];
+	$datetime		=	(int)$_REQUEST['date'];
+
+	//$datetime		=	time();
+
+	//$description	=	filter($_REQUEST['description']);
+
+	$ref_id=$_REQUEST['payment_no'];
+
+	$inv		=	$AdminDAO->getrows("$dbname_detail.supplierinvoice","paidamount","pksupplierinvoiceid='$invoice_no'");	
+
+		$paidamount		=	$inv[0]['paidamount'];
+
+	if(count($inv)==0)
+
+	{
+
+		if($supplier=='')
+
+	{
+
+		$msg.="<li>Please select supplier</li>";   
+
+	}
+
+	if($billnumber=='')
+
+	{
+
+		$msg.="<li>Please enter bill number</li>";    
+
+	}
+
+	if($msg)
+
+	{
+
+		echo $msg;
+
+		exit;
+
+	}
+
+	$fields	=	array('fksupplierid','billnumber','datetime','refrance_id','paidamount','addby');
+
+	$values	=	array($supplier,$billnumber,$datetime,$ref_id,$amount,$usid);
+
+	echo $AdminDAO->insertrow("$dbname_detail.supplierinvoice",$fields,$values);
+
+	}
+
+	else
+
+	{
+
+		
+
+	
+	    $datetime		=	time();
+		$total_amount =((int)$paidamount+$amount);	
+
+				$fields22	=	array('paidamount','edittime','editby');
+
+	            $values22	=	array($total_amount,$datetime,$usid);
+
+		$AdminDAO->updaterow("$dbname_detail.supplierinvoice",$fields22,$values22,"refrance_id='$ref_id'");
+
+		}
+
+?>

@@ -1,0 +1,7 @@
+Barcode,Item,Description,Weight,BrandID,SupplierID,CountryID,LastSalePrice,PriceLimit,AgreedPrice,Quantity,Deadline,LocationID,Comments,CustomerID,ClientInformation
+102,"Water (Case,500ml,24 p) Nestle",Cool Original,40,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+103,COLGATE T/P HERBAL 150G,Chilli Heatwave ,40,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+104,HGTT,Tangy Cheese,40,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+105,TOPS JUICE 250ML,Lightly Salted,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+106,MALAPINE P-APLE B-SLI 567,Tangy Cheese,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation
+444,ROBIN LIQUID BLUE 75ML,Hint Of Lime,12,brandname,companyname,countryname,300,305,295,5,30/5/11,storename,Shahid order for DHA,companyname,ClientInformation

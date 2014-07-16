@@ -1,0 +1,18 @@
+.results{width:450px;  display:none; z-index:1000; overflow: visible}
+.results ul, .results li{padding:0; margin:0; border:0; list-style:none; }
+.results li {border-top:solid 1px #DEDEDE; }
+.results li a{display:block; padding:4px; text-decoration:none; color:#000000; font-weight:bold;}
+.results li a small{display:block; text-decoration:none; color:#999999; font-weight:normal;}
+.results li a:hover{background:#FFFFCC;}
+.results ul {padding:6px;position:absolute; background:#FFF;}
+.selectedli {background:#39C;}
+
+/*added from store_autocomplete.css by ahsan 21/02/2012*/
+#search-wrap input{width:400px; font-size:16px; color:#999999; padding:6px; border:solid 1px #999999; overflow:auto;}
+#results{width:450px;  display:none; z-index:1000; overflow: visible}
+#results ul, #results li{padding:0; margin:0; border:0; list-style:none; }
+#results li {border-top:solid 1px #DEDEDE; }
+#results li a{display:block; padding:4px; text-decoration:none; color:#000000; font-weight:bold;}
+#results li a small{display:block; text-decoration:none; color:#999999; font-weight:normal;}
+#results li a:hover{background:#FFFFCC;}
+#results ul {padding:6px;position:absolute; background:#FFF;}
